@@ -59,7 +59,7 @@ GameEngineSoundPlayer GameEngineSound::SoundPlayControl(const std::string& _Name
 {
 	std::string UpperName = GameEngineString::ToUpperReturn(_Name);
 
-	GameEngineSound* FindSound = FindRes(UpperName);
+	GameEngineSound* FindSound = FindResources(UpperName);
 
 	if (nullptr == FindSound)
 	{
@@ -79,7 +79,7 @@ void GameEngineSound::SoundPlayOneShot(const std::string& _Name, int LoopCount /
 {
 	std::string UpperName = GameEngineString::ToUpperReturn(_Name);
 
-	GameEngineSound* FindSound = FindRes(UpperName);
+	GameEngineSound* FindSound = FindResources(UpperName);
 
 	if (nullptr == FindSound)
 	{
@@ -111,7 +111,7 @@ void GameEngineSound::Update()
 std::map<std::string, GameEngineSound*> GameEngineSound::AllRes;
 
 
-GameEngineSound* GameEngineSound::FindRes(const std::string& _Name) 
+GameEngineSound* GameEngineSound::FindResources(const std::string& _Name)
 {
 	std::string UpperName = GameEngineString::ToUpperReturn(_Name);
 
@@ -124,12 +124,19 @@ GameEngineSound* GameEngineSound::FindRes(const std::string& _Name)
 
 	return FindIter->second;
 }
-GameEngineSound* GameEngineSound::LoadRes(const std::string& _Path)
+
+GameEngineSound* GameEngineSound::LoadResources(const GameEngineFile& _Path)// 게임엔진 파일 자체를 받을수 있는기능
+{
+	return LoadResources(_Path.GetFullPath());
+}
+
+
+GameEngineSound* GameEngineSound::LoadResources(const std::string& _Path)
 {
 	GameEnginePath NewPath = GameEnginePath(_Path);
-	return LoadRes(_Path, NewPath.GetFileName());	//경로와 파일이름(ex.idle.bmp)을 Map의 key,value로 넣기위해 각각 넘겨준다.
+	return LoadResources(_Path, NewPath.GetFileName());	//경로와 파일이름(ex.idle.bmp)을 Map의 key,value로 넣기위해 각각 넘겨준다.
 }
-GameEngineSound* GameEngineSound::LoadRes(const std::string& _Path, const std::string& _Name)
+GameEngineSound* GameEngineSound::LoadResources(const std::string& _Path, const std::string& _Name)
 {
 	std::string UpperName = GameEngineString::ToUpperReturn(_Name);
 

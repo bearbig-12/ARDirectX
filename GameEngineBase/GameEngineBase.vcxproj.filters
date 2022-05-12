@@ -25,6 +25,9 @@
     <Filter Include="ThirdParty\Sound">
       <UniqueIdentifier>{86af6b30-6553-442b-b937-277e57b299fb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ThirdParty\Lib">
+      <UniqueIdentifier>{086feaf9-7b5d-4589-8951-5da5e055bcd7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameEngineDebug.cpp">
@@ -119,5 +122,19 @@
     <ClInclude Include="GameEngineSound.h">
       <Filter>ThirdParty\Sound</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <CopyFileToFolders Include="ThirdParty\bin\fmod.dll">
+      <Filter>ThirdParty\Lib</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="ThirdParty\bin\fmod_vc.lib">
+      <Filter>ThirdParty\Lib</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="ThirdParty\bin\fmodL.dll">
+      <Filter>ThirdParty\Lib</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="ThirdParty\bin\fmodL_vc.lib">
+      <Filter>ThirdParty\Lib</Filter>
+    </CopyFileToFolders>
   </ItemGroup>
 </Project>

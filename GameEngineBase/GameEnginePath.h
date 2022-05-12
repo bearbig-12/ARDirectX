@@ -20,11 +20,11 @@ public:
 
 	bool IsExits();
 
-	std::string GetExtension();
+	std::string GetExtension() const;
 
-	std::string GetFileName();
+	std::string GetFileName() const;
 
-	std::string GetFullPath();
+	std::string GetFullPath() const;
 
 protected:
 	std::filesystem::path Path_;

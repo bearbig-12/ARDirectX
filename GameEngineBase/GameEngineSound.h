@@ -1,6 +1,7 @@
 #pragma once
 #include "GameEngineNameObject.h"
 #include "ThirdParty/inc/fmod.hpp"
+#include "GameEngineFile.h"
 #include <map>
 
 class GameEngineSoundPlayer;
@@ -37,9 +38,10 @@ public:
 /// ///////////////////////////////////// 리소스 매니지먼트
 /// </summary>
 public:
-	static GameEngineSound* FindRes(const std::string& _Name);
-	static GameEngineSound* LoadRes(const std::string& _Path);
-	static GameEngineSound* LoadRes(const std::string& _Path, const std::string& _Name);
+	static GameEngineSound* FindResources(const std::string& _Name);
+	static GameEngineSound* LoadResources(const GameEngineFile& _Path); // 게임엔진 파일 자체를 받을수 있는기능
+	static GameEngineSound* LoadResources(const std::string& _Path);
+	static GameEngineSound* LoadResources(const std::string& _Path, const std::string& _Name);
 
 	static void AllResourcesDestroy();
 
