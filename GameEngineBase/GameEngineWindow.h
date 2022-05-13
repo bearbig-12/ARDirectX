@@ -1,6 +1,7 @@
 #pragma once
 #include <Windows.h>
 #include <string>
+#include <functional>
 #include "GameEngineMath.h"
 #include "GameEngineDebug.h"
 
@@ -29,7 +30,7 @@ public:
 	void RegClass(HINSTANCE _hInst);
 	void CreateGameWindow(HINSTANCE _hInst, const std::string& _Title);
 	void ShowGameWindow();
-	void MessageLoop(void(*_InitFunction)(), void(*_LoopFunction)());
+	void MessageLoop(std::function<void()> _Init, std::function<void()> _Loop);
 
 	void SetWindowScaleAndPosition(float4 _Pos, float4 _Scale);
 

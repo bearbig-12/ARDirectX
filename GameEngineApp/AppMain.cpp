@@ -6,9 +6,28 @@
 #include <GameEngineBase/GameEngineFile.h>
 #include <GameEngineBase/GameEngineDirectory.h>
 #include <GameEngineBase/GameEngineSound.h>
+#include <GameEngineBase/GameEngineWindow.h>
 
+class RockManCore
+{
+public:
+	void Init()
+	{
+		
+	}
+	void Loop()
+	{
+		std::string Text = "록맨이 실행되는중";
+		TextOut(GameEngineWindow::GetHDC(), 0, 0, Text.c_str(), Text.size());
+	}
+};
 
-int main() 
+int APIENTRY WinMain(
+	_In_ HINSTANCE hInstance,
+	_In_opt_ HINSTANCE hPrevInstance,
+	_In_ LPSTR lpCmdLine,
+	_In_ int nShowCmd
+)
 {
 	GameEngineDirectory Dir;
 
@@ -31,12 +50,18 @@ int main()
 		//File
 		//GameEngineSound::LoadResources("BGM.mp3");
 	}
+
+	RockManCore Core;
+
 	GameEngineSound::SoundPlayControl("BGM.mp3");
 
-	while (true)
-	{
-
-	}
+	GameEngineWindow::GetInst().CreateGameWindow(hInstance, "WindowTitle");
+	GameEngineWindow::GetInst().SetWindowScaleAndPosition({ 0,0 }, { 1280,720 });
+	GameEngineWindow::GetInst().ShowGameWindow();
+	GameEngineWindow::GetInst().MessageLoop(
+		std::bind(&RockManCore::Init, &Core), 
+		std::bind(&RockManCore::Loop, &Core)
+	);
 
 	return 0;
 }
