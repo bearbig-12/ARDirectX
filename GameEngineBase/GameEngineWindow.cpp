@@ -129,7 +129,7 @@ void GameEngineWindow::ShowGameWindow()
 }
 
 
-void GameEngineWindow::MessageLoop(std::function<void()> _Init, std::function<void()> _Loop)
+void GameEngineWindow::MessageLoop(std::function<void()> _Init, std::function<void()> _Loop, std::function<void()> _End)
 {
     // 윈도우는 다 준비되었다.
     // 루프를 돌기전에
@@ -169,6 +169,11 @@ void GameEngineWindow::MessageLoop(std::function<void()> _Init, std::function<vo
 
         
     }
+    if (_End != nullptr)
+    {
+        _End();
+    }
+    
 }
 
 void GameEngineWindow::SetWindowScaleAndPosition(float4 _Pos, float4 _Scale) 
