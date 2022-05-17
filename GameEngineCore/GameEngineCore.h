@@ -1,6 +1,7 @@
 #pragma once
 #include <GameEngineBase/GameEngineString.h>
 #include <GameEngineBase/GameEngineDebug.h>
+#include <map>
 // 설명 :
 class GameEngineCore
 {
@@ -16,30 +17,51 @@ public:
 		
 		//core.UserGameStart();
 	}
+
+
+
+
 protected:
 	virtual std::string GetWindowTitle() { return "MainWindow"; }
 
-	virtual void UserGameStart() = 0;
-	virtual void UserGameUpdate() = 0;
-	virtual void UserGameEnd() = 0;
+	// 너희들이 간섭할수 있는 내용
+	virtual void UserStart() = 0;
+	virtual void UserUpdate() = 0;
+	virtual void UserEnd() = 0;
 
 
 	// constrcuter destructer
 	GameEngineCore();
 	~GameEngineCore();
 
+
+	class GameEngineLevel* FindLevel(const std::string& _Name); // 전방선언 반환
+
+	// 장면용
 	template<typename LevelType>
-	void LevelCreate(const std::string _Name)
+	GameEngineLevel* CreateLevel(const std::string& _Name) 
 	{
 		std::string UpperName = GameEngineString::ToUpperReturn(_Name);
+		GameEngineLevel* NewLevel = new LevelType();
+		InitializeLevel(NewLevel, UpperName);
+		return NewLevel;
 	}
 	
+	bool ChangeLevel(const std::string& _Name);
+
+	
 private:
+	static std::map<std::string, class GameEngineLevel*> AllLevels;
+	static GameEngineLevel* CurrentLevel;
+	static GameEngineLevel* NextLevel;
+
 	static void WindowCreate(const std::string& _Name, GameEngineCore* _UserCore);
 	static void CoreStart(GameEngineCore* _UserCore);	// 프로그램 시작
 	static void CoreUpdate(GameEngineCore* _UserCore);	// 프로그램 업데이트
 	static void CoreEnd(GameEngineCore* _UserCore); // 프로그램 업데이트
 
+	// 헤더 추가하기 싫어서 굳이 만듬 초기화를 cpp서 할려구
+	void InitializeLevel(GameEngineLevel* _Level, const std::string _Name);
 
 	// delete Function
 	GameEngineCore(const GameEngineCore& _Other) = delete;

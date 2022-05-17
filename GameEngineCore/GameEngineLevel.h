@@ -1,12 +1,17 @@
 #pragma once
-
+#include <GameEngineBase/GameEngineNameObject.h>
+#include <GameEngineBase/GameEngineUpdateObject.h>
 // 설명 :
-class GameEngineLevel
+class GameEngineLevel : 
+	public GameEngineNameObject
+	, public GameEngineUpdateObject
 {
+	friend class GameEngineCore;
+	//레벨이 현재까지 얼마나 켜져있었는지 시간을 잴 수 있어야 한다.
 public:
 	// constrcuter destructer
 	GameEngineLevel();
-	~GameEngineLevel();
+	virtual ~GameEngineLevel() = 0;
 
 	// delete Function
 	GameEngineLevel(const GameEngineLevel& _Other) = delete;
@@ -15,6 +20,11 @@ public:
 	GameEngineLevel& operator=(GameEngineLevel&& _Other) noexcept = delete;
 
 protected:
+	virtual void UserStart() = 0;
+	virtual void UserUpdate() = 0;
+	virtual void UserEnd() = 0;
+
+
 
 private:
 

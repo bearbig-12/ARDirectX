@@ -15,6 +15,9 @@ public:
 	TitleLevel& operator=(TitleLevel&& _Other) noexcept = delete;
 
 protected:
+	void UserStart() override;
+	void UserUpdate() override;
+	void UserEnd() override;
 
 private:
 
