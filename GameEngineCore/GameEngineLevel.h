@@ -3,14 +3,16 @@
 #include <GameEngineBase/GameEngineUpdateObject.h>
 #include <list>
 #include <map>
+
 // 설명 : 화면(타이틀 화면, 플레이 화면, 인벤토리 화면)
 class GameEngineActor;
-class GameEngineLevel : 
-	public GameEngineNameObject
-	, public GameEngineUpdateObject
+class GameEngineLevel :
+	public GameEngineNameObject,
+	public GameEngineUpdateObject
 {
 	friend class GameEngineCore;
-	//레벨이 현재까지 얼마나 켜져있었는지 시간을 잴 수 있어야 한다.
+	// 레벨이 현재까지 얼마나 켜져있었는지 시간을 잴수 있게 한다.
+
 public:
 	// constrcuter destructer
 	GameEngineLevel();
@@ -23,13 +25,11 @@ public:
 	GameEngineLevel& operator=(GameEngineLevel&& _Other) noexcept = delete;
 
 protected:
-	/*template<typename ReturnType, typename ActorType, typename GroupIndexType>
-	ReturnType* CreateActor(GroupIndexType _ObjectGroupIndex)
-	{
-		return CreateActor<ActorType>(static_cast<int>(_ObjectGroupIndex));
-
-
-	}*/
+	//template<typename ReturnType, typename ActorType, typename GroupIndexType>
+	//ReturnType* CreateActor(GroupIndexType _ObjectGroupIndex)
+	//{
+	//	return CreateActor<ActorType>(static_cast<int>(_ObjectGroupIndex));
+	//}
 
 	template<typename ActorType, typename GroupIndexType>
 	GameEngineActor* CreateActor(GroupIndexType _ObjectGroupIndex)
@@ -55,9 +55,12 @@ protected:
 
 
 private:
-	// 앞에 있는 int = 0번, 1번 2번 그룹 몬스터
+	// 0번 그룹 플레이어
+	// 1번 그룹 몬스터
+	// 2번 그룹
 	std::map<int, std::list<GameEngineActor*>> AllActors;
 
 	void ActorUpdate(float _DelataTime);
+
 };
 

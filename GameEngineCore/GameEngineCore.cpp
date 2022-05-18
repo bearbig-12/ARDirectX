@@ -1,7 +1,7 @@
 #include "GameEngineCore.h"
 #include <GameEngineBase/GameEngineWindow.h>
-#include <GameEngineBase/GameEngineTime.h>
 #include <GameEngineBase/GameEngineInput.h>
+#include <GameEngineBase/GameEngineTime.h>
 #include "GameEngineLevel.h"
 
 #pragma comment(lib, "GameEngineBase.lib")
@@ -11,13 +11,13 @@ GameEngineLevel* GameEngineCore::NextLevel = nullptr;
 
 std::map<std::string, class GameEngineLevel*> GameEngineCore::AllLevels;
 
-GameEngineCore::GameEngineCore() 
+
+GameEngineCore::GameEngineCore()
 {
 }
 
-GameEngineCore::~GameEngineCore() 
+GameEngineCore::~GameEngineCore()
 {
-
 }
 
 class GameEngineLevel* GameEngineCore::FindLevel(const std::string& _Name)
@@ -34,7 +34,6 @@ class GameEngineLevel* GameEngineCore::FindLevel(const std::string& _Name)
 
 bool GameEngineCore::ChangeLevel(const std::string& _Name)
 {
-	
 	NextLevel = FindLevel(_Name);
 
 	if (nullptr == NextLevel)
@@ -45,12 +44,12 @@ bool GameEngineCore::ChangeLevel(const std::string& _Name)
 
 	return true;
 }
-void GameEngineCore::CoreStart(GameEngineCore* _UserCore)	// 프로그램 시작
-{
-	// 엔진이 뭔가를 한다.
-	// 준비를 먼저하고
-	_UserCore->UserStart();
 
+void GameEngineCore::CoreStart(GameEngineCore* _UserCore)
+{
+	// 엔진이 뭔가를 할겁니다.
+	// 준비를 먼저하고.
+	_UserCore->UserStart();
 }
 
 void GameEngineCore::CoreUpdate(GameEngineCore* _UserCore)
@@ -76,20 +75,21 @@ void GameEngineCore::CoreUpdate(GameEngineCore* _UserCore)
 
 	GameEngineTime::GetInst()->Update();
 
-
 	// 엔진수준에서 유저가 하고 싶은일.
 	_UserCore->UserUpdate(GameEngineTime::GetInst()->GetDeltaTime());
 
 	// 레벨수준에서 유저가 하고 싶은일.
-	CurrentLevel->AddAccTime(GameEngineTime::GetDeltaTime()); // 내가 활동한지 몇초가 지났는지 재줌
+	CurrentLevel->AddAccTime(GameEngineTime::GetDeltaTime());
 	CurrentLevel->UserUpdate(GameEngineTime::GetDeltaTime());
 
-	
+	// CurrentLevel->
+
 }
+
 void GameEngineCore::CoreEnd(GameEngineCore* _UserCore)
 {
 	_UserCore->UserEnd();
-	
+
 	for (auto& Level : AllLevels)
 	{
 		if (nullptr == Level.second)
@@ -100,24 +100,25 @@ void GameEngineCore::CoreEnd(GameEngineCore* _UserCore)
 		Level.second = nullptr;
 	}
 
-	// 싱글톤 동적 할당 싸그리 지우기
 	GameEngineWindow::Destroy();
-	GameEngineTime::Destroy();
 	GameEngineInput::Destroy();
-	
+	GameEngineTime::Destroy();
+
 }
+
 
 void GameEngineCore::WindowCreate(const std::string& _Name, GameEngineCore* _UserCore)
 {
 	GameEngineWindow::GetInst()->CreateGameWindow(nullptr, _Name.c_str());
-	GameEngineWindow::GetInst()->SetWindowScaleAndPosition({ 0,0 }, { 1280,720 });
+	GameEngineWindow::GetInst()->SetWindowScaleAndPosition({ 0,0 }, { 1280, 720 });
 	GameEngineWindow::GetInst()->ShowGameWindow();
 	GameEngineWindow::GetInst()->MessageLoop(
-	std::bind(&GameEngineCore::CoreStart, _UserCore),
-	std::bind(&GameEngineCore::CoreUpdate, _UserCore),
-	std::bind(&GameEngineCore::CoreEnd, _UserCore)
+		std::bind(&GameEngineCore::CoreStart, _UserCore),
+		std::bind(&GameEngineCore::CoreUpdate, _UserCore),
+		std::bind(&GameEngineCore::CoreEnd, _UserCore)
 	);
 }
+
 void GameEngineCore::InitializeLevel(GameEngineLevel* _Level, const std::string _Name)
 {
 	_Level->UserStart();
