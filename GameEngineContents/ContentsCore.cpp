@@ -32,7 +32,7 @@ void ContentsCore::UserStart()
 	//			스테이지 2
 
 }
-void ContentsCore::UserUpdate()
+void ContentsCore::UserUpdate(float _DeltaTime)
 {
 	// 서버가 종료됨 게임을 종료합니다.
 	// 무조건 경고 메세지 창을 띄워줘야 한다.

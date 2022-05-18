@@ -1,7 +1,11 @@
 #pragma once
+#include <GameEngineBase/GameEngineNameObject.h>
+#include <GameEngineBase/GameEngineUpdateObject.h>
 
-// 설명 :
-class GameEngineActor
+// 설명 : 화면에 등장하는 모든것을 표현하기위한 클래스
+class GameEngineActor :
+	public GameEngineNameObject
+	, public GameEngineUpdateObject
 {
 public:
 	// constrcuter destructer

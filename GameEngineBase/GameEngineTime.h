@@ -1,5 +1,6 @@
 #pragma once
 #include <map>
+#include <chrono>
 
 // 설명 :
 class GameEngineTime
@@ -31,15 +32,27 @@ public:
 
 	static inline float GetDeltaTime()
 	{
-		return Inst_->DeltaTime_;
+		return Inst_->DeltaTimef;
+	}
+
+	template <typename EnumType>
+	static inline float GetDeltaTime(EnumType _Key)
+	{
+		return GetDeltaTime(static_cast<int>(_Key));
 	}
 
 	static inline float GetDeltaTime(int _Key)
 	{
-		return Inst_->DeltaTime_ * Inst_->GetTimeScale(_Key);
+		return Inst_->DeltaTimef * Inst_->GetTimeScale(_Key);
 	}
 
-	void SetTimeScale(int _Key, float _TimeScale) 
+	template <typename EnumType>
+	static inline float SetTimeScale(EnumType _Key, float _TimeScale)
+	{
+		SetTimeScale(static_cast<int>(_Key), _TimeScale);
+	}
+
+	void SetTimeScale(int _Key, float _TimeScale) // 게임을 빠르게 설정가능
 	{
 		TimeScale_[_Key] = _TimeScale;
 	}
@@ -57,11 +70,9 @@ public:
 protected:
 
 private:
-	__int64 SecondCount_;
-	__int64 CurrentCount_;
-	__int64 PrevCount_;
-	float DeltaTime_;
-	double RealDeltaTime_;
+	std::chrono::steady_clock::time_point Prev;
+	double DeltaTimed;
+	float DeltaTimef;
 	std::map<int, float> TimeScale_;
 
 	GameEngineTime();

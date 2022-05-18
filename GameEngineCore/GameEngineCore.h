@@ -26,7 +26,8 @@ protected:
 
 	// 너희들이 간섭할수 있는 내용
 	virtual void UserStart() = 0;
-	virtual void UserUpdate() = 0;
+	// 엔진에서 제공하느 시간을 주고 너는 이걸 써라
+	virtual void UserUpdate(float _DeltaTime) = 0;
 	virtual void UserEnd() = 0;
 
 

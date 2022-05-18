@@ -1,5 +1,6 @@
 #include "TitleLevel.h"
-
+#include "TitleLogo.h"
+#include "Enums.h"
 TitleLevel::TitleLevel() 
 {
 }
@@ -10,9 +11,11 @@ TitleLevel::~TitleLevel()
 
 void TitleLevel::UserStart()
 {
-	int a = 0;
+	CreateActor<TitleLogo>(GameObjectGroup::UI);
+
+	//GameEngineTime::GetInst()->SetTimeScale(GameObjectGroup::Monster, 0.5); // 몬스터들만 느리게
 }
-void TitleLevel::UserUpdate()
+void TitleLevel::UserUpdate(float _DeltaTime)
 {
 	// 레벨 바뀌어서 오면 초기화
 	//GetAccTime();

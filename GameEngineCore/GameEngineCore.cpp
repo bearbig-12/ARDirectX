@@ -78,12 +78,13 @@ void GameEngineCore::CoreUpdate(GameEngineCore* _UserCore)
 
 
 	// 엔진수준에서 유저가 하고 싶은일.
-	_UserCore->UserUpdate();
+	_UserCore->UserUpdate(GameEngineTime::GetInst()->GetDeltaTime());
 
 	// 레벨수준에서 유저가 하고 싶은일.
 	CurrentLevel->AddAccTime(GameEngineTime::GetDeltaTime()); // 내가 활동한지 몇초가 지났는지 재줌
-	CurrentLevel->UserUpdate();
+	CurrentLevel->UserUpdate(GameEngineTime::GetDeltaTime());
 
+	
 }
 void GameEngineCore::CoreEnd(GameEngineCore* _UserCore)
 {
