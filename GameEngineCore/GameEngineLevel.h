@@ -10,6 +10,7 @@ class GameEngineLevel :
 	public GameEngineNameObject,
 	public GameEngineUpdateObject
 {
+	friend class GameEngineRenderer;
 	friend class GameEngineCore;
 	// 레벨이 현재까지 얼마나 켜져있었는지 시간을 잴수 있게 한다.
 
@@ -41,6 +42,9 @@ protected:
 	GameEngineActor* CreateActor(int _ObjectGroupIndex = 0)
 	{
 		GameEngineActor* NewActor = new ActorType();
+		NewActor->ParentLevel = this;
+		NewActor->Start();
+		NewActor->SetLevel(this);
 
 		// AllActors[_ObjectGroupIndex]게 사용하면
 		// 없으면 만들어버리고 있으면
@@ -62,5 +66,16 @@ private:
 
 	void ActorUpdate(float _DelataTime);
 
+
+
+private:
+	// 0번 백그라운드
+	// 1번 플레이어
+	// 2번 UI
+	std::map<int, std::list<class GameEngineRenderer*>> AllRenderer_;
+
+	void PushRenderer(GameEngineRenderer* _Renderer);
+
+	void Render(float _DelataTime);
 };
 

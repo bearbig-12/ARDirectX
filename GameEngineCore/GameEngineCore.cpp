@@ -49,7 +49,7 @@ void GameEngineCore::CoreStart(GameEngineCore* _UserCore)
 {
 	// 엔진이 뭔가를 할겁니다.
 	// 준비를 먼저하고.
-	_UserCore->UserStart();
+	_UserCore->Start();
 }
 
 void GameEngineCore::CoreUpdate(GameEngineCore* _UserCore)
@@ -64,6 +64,10 @@ void GameEngineCore::CoreUpdate(GameEngineCore* _UserCore)
 		CurrentLevel = NextLevel;
 		NextLevel = nullptr;
 		CurrentLevel->OnEvent();
+
+		// ex) 타이틀에서 5초후 -> 플레이 레벨로 이동
+		//	   플레이 레벨에서 -> 다시 타이틀 레벨로
+		CurrentLevel->ReSetAccTime();
 		GameEngineTime::GetInst()->Reset();
 	}
 
@@ -74,13 +78,17 @@ void GameEngineCore::CoreUpdate(GameEngineCore* _UserCore)
 	}
 
 	GameEngineTime::GetInst()->Update();
+	
+	float DeltaTime = GameEngineTime::GetInst()->GetDeltaTime();
 
 	// 엔진수준에서 유저가 하고 싶은일.
-	_UserCore->UserUpdate(GameEngineTime::GetInst()->GetDeltaTime());
+	_UserCore->Update(DeltaTime);
 
 	// 레벨수준에서 유저가 하고 싶은일.
-	CurrentLevel->AddAccTime(GameEngineTime::GetDeltaTime());
-	CurrentLevel->UserUpdate(GameEngineTime::GetDeltaTime());
+	CurrentLevel->AddAccTime(DeltaTime);
+	CurrentLevel->Update(DeltaTime);
+	CurrentLevel->ActorUpdate(DeltaTime);
+	CurrentLevel->Render(DeltaTime);
 
 	// CurrentLevel->
 
@@ -88,7 +96,7 @@ void GameEngineCore::CoreUpdate(GameEngineCore* _UserCore)
 
 void GameEngineCore::CoreEnd(GameEngineCore* _UserCore)
 {
-	_UserCore->UserEnd();
+	_UserCore->End();
 
 	for (auto& Level : AllLevels)
 	{
@@ -121,7 +129,7 @@ void GameEngineCore::WindowCreate(const std::string& _Name, GameEngineCore* _Use
 
 void GameEngineCore::InitializeLevel(GameEngineLevel* _Level, const std::string _Name)
 {
-	_Level->UserStart();
+	_Level->Start();
 	_Level->SetName(_Name);
 
 	// AllLevels.insert(std::map<std::string, GameEngineLevel*>::value_type(_Name, NewLevel));

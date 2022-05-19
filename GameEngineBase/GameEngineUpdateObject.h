@@ -37,7 +37,7 @@ public:
 		return IsDeath_;
 	}
 
-	void AddAccTime(float _DeltaTime) 
+	void AddAccTime(float _DeltaTime)
 	{
 		AccTime_ += _DeltaTime;
 	}
@@ -88,18 +88,23 @@ public:
 		Order_ = _Order;
 	}
 
+
 protected:
 	// 이 오브젝트가 동작을 하기 시작했다.
-	virtual void OnEvent() {};
+	virtual void OnEvent() {}
+
 	// 이 오브젝트가 꺼졌다.
-	virtual void OffEvent() {};
+	virtual void OffEvent() {}
 
 	// 이 오브젝트가 만들어졌다.
-	virtual void UserStart() = 0;
-	// 이 오브젝트가 프레임구조안에 돌고있다
-	virtual void UserUpdate(float _DeltaTime) = 0;
-	//이 오브젝트가 메모리가 삭제된다.
-	virtual void UserEnd() = 0;
+	virtual void Start() = 0;
+
+	// 이 오브젝트가 프레임구조안에서 돌고 있다.
+	virtual void Update(float _DeltaTime) = 0;
+
+	// 이 오브젝트가 메모리가 삭제된다.
+	virtual void End() = 0;
+
 private:
 	int Order_;
 	bool IsReleaseUpdate_;

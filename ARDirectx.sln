@@ -31,6 +31,11 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GameEngineContents", "GameE
 		{33315545-4554-4677-8527-7C61BEDA9CF4} = {33315545-4554-4677-8527-7C61BEDA9CF4}
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DOC", "DOC", "{449EB6A3-B867-42AD-9020-7A12797D954B}"
+	ProjectSection(SolutionItems) = preProject
+		이벤트.txt = 이벤트.txt
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64

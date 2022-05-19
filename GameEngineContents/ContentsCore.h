@@ -22,11 +22,11 @@ public:
 
 protected:
 
-	void UserStart() override; // 게임이 시작할때 하는 일 ex 리소스 업데이트
+	void Start() override; // 게임이 시작할때 하는 일 ex 리소스 업데이트
 	// 이 프로그램이 어느 상황에서건 계속 Update하면서 체크할일 있다면 여기서 한다.
 	// 서버가 붙지 않으면 그럴일은 없다. 게임이 무슨 레벨이건 뭐건 무슨키를 누르면 종료한다.
-	void UserUpdate(float _DeltaTime) override;
-	void UserEnd() override;
+	void Update(float _DeltaTime) override;
+	void End() override;
 
 private:
 

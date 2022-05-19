@@ -13,6 +13,13 @@
     <ClInclude Include="GameEngineStateManager.h">
       <Filter>Contents</Filter>
     </ClInclude>
+    <ClInclude Include="GEngine.h" />
+    <ClInclude Include="GameEngineComponent.h">
+      <Filter>Object\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEngineRenderer.h">
+      <Filter>Object\Component\Rendering</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameEngineActor.cpp">
@@ -26,6 +33,13 @@
     </ClCompile>
     <ClCompile Include="GameEngineStateManager.cpp">
       <Filter>Contents</Filter>
+    </ClCompile>
+    <ClCompile Include="GEngine.cpp" />
+    <ClCompile Include="GameEngineComponent.cpp">
+      <Filter>Object\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineRenderer.cpp">
+      <Filter>Object\Component\Rendering</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -41,11 +55,14 @@
     <Filter Include="Contents">
       <UniqueIdentifier>{f2861186-4992-4546-8c32-edd8e82e6890}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Object\Rendering">
-      <UniqueIdentifier>{1a6d16ed-5524-42ce-839a-938908069d97}</UniqueIdentifier>
+    <Filter Include="Object\Component">
+      <UniqueIdentifier>{6f8774e0-5266-4316-949d-8f29310a1ac5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Object\Collision">
+    <Filter Include="Object\Component\Collision">
       <UniqueIdentifier>{b4a9edc7-5a97-47da-8618-38096c013260}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Component\Rendering">
+      <UniqueIdentifier>{1a6d16ed-5524-42ce-839a-938908069d97}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
