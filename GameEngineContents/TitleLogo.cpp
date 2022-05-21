@@ -12,6 +12,9 @@ TitleLogo::~TitleLogo()
 
 void TitleLogo::Start()
 {
+	GetTransform().SetScale({ 100,100,100 });
+	GetTransform().SetPosition({ 300,300,100 });
+
 	{
 		GameEngineRenderer* Render = CreateComponent<GameEngineRenderer>();
 

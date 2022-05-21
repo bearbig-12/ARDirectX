@@ -2,6 +2,7 @@
 #include <GameEngineBase/GameEngineNameObject.h>
 #include <GameEngineBase/GameEngineUpdateObject.h>
 #include <list>
+#include <GameEngineBase/GameEngineTransform.h>
 
 // 설명 : 화면에 등장하는 모든것을 표현하기 위한 클래스
 class GameEngineComponent;
@@ -51,6 +52,15 @@ private:
 	void SetLevel(GameEngineLevel* _ParentLevel)
 	{
 		ParentLevel = _ParentLevel;
+	}
+	//////////////////////////////////////////////////////////기하 관련
+private:
+	GameEngineTransform Transform;
+
+public:
+	GameEngineTransform& GetTransform()
+	{
+		return Transform;
 	}
 };
 

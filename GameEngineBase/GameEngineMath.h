@@ -106,17 +106,20 @@ public:
 		return Lerp(p1, p2, Time);
 	}
 
+\
+
 	//X = P1X * cosf(40) - P1Y * sinf(40)
 	//Y = P1X * sinf(40) + P1Y * cosf(40)
 
 
 
 public:
-	static float4 LEFT;
-	static float4 RIGHT;
-	static float4 UP;
-	static float4 DOWN;
-	static float4 ZERO;
+	static const float4 LEFT;
+	static const float4 RIGHT;
+	static const float4 UP;
+	static const float4 DOWN;
+	static const float4 ZERO;
+	static const float4 ONE;
 
 public:
 	float x;
