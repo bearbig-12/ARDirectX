@@ -47,6 +47,9 @@ bool GameEngineCore::ChangeLevel(const std::string& _Name)
 
 void GameEngineCore::CoreStart(GameEngineCore* _UserCore)
 {
+	// 엔진 리소스는 완성되어야 합니다.
+	EngineResourcesInitialize();
+
 	// 엔진이 뭔가를 할겁니다.
 	// 준비를 먼저하고.
 	_UserCore->Start();
@@ -65,9 +68,10 @@ void GameEngineCore::CoreUpdate(GameEngineCore* _UserCore)
 		NextLevel = nullptr;
 		CurrentLevel->OnEvent();
 
-		// ex) 타이틀에서 5초후 -> 플레이 레벨로 이동
-		//	   플레이 레벨에서 -> 다시 타이틀 레벨로
+		// ex) 타이틀에서 5초후 => 플레이 레벨로 이동
+		//     플레이 레벨에서 => 다시 타이틀레벨로
 		CurrentLevel->ReSetAccTime();
+
 		GameEngineTime::GetInst()->Reset();
 	}
 
@@ -78,8 +82,8 @@ void GameEngineCore::CoreUpdate(GameEngineCore* _UserCore)
 	}
 
 	GameEngineTime::GetInst()->Update();
-	
-	float DeltaTime = GameEngineTime::GetInst()->GetDeltaTime();
+
+	float DeltaTime = GameEngineTime::GetDeltaTime();
 
 	// 엔진수준에서 유저가 하고 싶은일.
 	_UserCore->Update(DeltaTime);
@@ -89,7 +93,6 @@ void GameEngineCore::CoreUpdate(GameEngineCore* _UserCore)
 	CurrentLevel->Update(DeltaTime);
 	CurrentLevel->ActorUpdate(DeltaTime);
 	CurrentLevel->Render(DeltaTime);
-
 	// CurrentLevel->
 
 }
@@ -107,6 +110,8 @@ void GameEngineCore::CoreEnd(GameEngineCore* _UserCore)
 		delete Level.second;
 		Level.second = nullptr;
 	}
+
+	EngineResourcesDestroy();
 
 	GameEngineWindow::Destroy();
 	GameEngineInput::Destroy();

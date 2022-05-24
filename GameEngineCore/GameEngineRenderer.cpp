@@ -4,6 +4,9 @@
 #include <Windows.h>
 #include <GameEngineBase/GameEngineWindow.h>
 
+#include "GameEngineVertexBuffer.h"
+#include "GameEngineIndexBuffer.h"
+
 GameEngineRenderer::GameEngineRenderer()
 {
 }
@@ -20,27 +23,45 @@ void GameEngineRenderer::Start()
 
 void GameEngineRenderer::Render(float _DeltaTime)
 {
-	//												0000			100,100,100							반으로 = 50,50,50
-	float4 LeftTop = GetActor()->GetTransform().GetPosition() - GetActor()->GetTransform().GetScale().Half();
-	//												-50,-50,-50
-	float4 RightBot = GetActor()->GetTransform().GetPosition() + GetActor()->GetTransform().GetScale().Half();
-	//												50 50 
+	GameEngineVertexBuffer* Vertex = GameEngineVertexBuffer::Find("Rect");
+	GameEngineIndexBuffer* Index = GameEngineIndexBuffer::Find("Rect");
 
-	POINT Vertex[4];
+	std::vector<POINT> DrawVertex;
+	DrawVertex.resize(Index->Indexs.size());
 
-	Vertex[0].x = -50 * GetActor()->GetTransform().GetScale().ix() + GetActor()->GetTransform().GetPosition().ix();
-	Vertex[0].y = -50 * GetActor()->GetTransform().GetScale().iy() + GetActor()->GetTransform().GetPosition().iy();
+	std::vector<float4> CopyBuffer;
+	CopyBuffer.resize(Index->Indexs.size());
 
-	Vertex[1].x = 50 * GetActor()->GetTransform().GetScale().ix() + GetActor()->GetTransform().GetPosition().ix();
-	Vertex[1].y = -50 * GetActor()->GetTransform().GetScale().iy() + GetActor()->GetTransform().GetPosition().iy();
 
-	Vertex[2].x = 50 * GetActor()->GetTransform().GetScale().ix() + GetActor()->GetTransform().GetPosition().ix();
-	Vertex[2].y = 50 * GetActor()->GetTransform().GetScale().iy() + GetActor()->GetTransform().GetPosition().iy();
 
-	Vertex[3].x = -50 * GetActor()->GetTransform().GetScale().ix() + GetActor()->GetTransform().GetPosition().ix();
-	Vertex[3].y = 50 * GetActor()->GetTransform().GetScale().iy() + GetActor()->GetTransform().GetPosition().iy();
+	for (size_t i = 0; i < Index->Indexs.size(); i++)
+	{
+		int TriIndex = Index->Indexs[i];
 
-	Polygon(GameEngineWindow::GetHDC(),Vertex,4);
-	//Rectangle(GameEngineWindow::GetHDC(), LeftTop.ix(), LeftTop.iy(), RightBot.ix(), RightBot.iy());
+		// 0 번째 순서의 점이 됩니다.
+		CopyBuffer[i] = Vertex->Vertexs[TriIndex];
+
+		// [0.5f] [0.5f] []                  [100] [100] [] 
+		// 크
+		CopyBuffer[i] *= GetActor()->GetTransform().GetScale();
+
+		// 자전
+		// CopyBuffer[TriIndex] *= GetActor()->GetTransform().GetScale();
+
+		// 이동
+		CopyBuffer[i] += GetActor()->GetTransform().GetPosition();
+
+
+
+		DrawVertex[i] = CopyBuffer[i].GetConvertWindowPOINT();
+	}
+
+
+	for (size_t i = 0; i < DrawVertex.size(); i += 3)
+	{
+		Polygon(GameEngineWindow::GetHDC(), &DrawVertex[i], 3);
+	}
+
+
+	// Rectangle(GameEngineWindow::GetHDC(), LeftTop.ix(), LeftTop.iy(), RightBot.ix(), RightBot.iy());
 }
-
