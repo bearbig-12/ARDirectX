@@ -45,12 +45,12 @@ private:
 class float4
 {
 public:
-	static float VectorXYtoDegree(float4 _Postion, float4 _Target)
+	static float VectorXYtoDegree(const float4& _Postion, const float4& _Target)
 	{
 		return VectorXYtoRadian(_Postion, _Target) * GameEngineMath::RadianToDegree;
 	}
 
-	static float VectorXYtoRadian(float4 _Postion, float4 _Target)
+	static float VectorXYtoRadian(const float4& _Postion, const float4& _Target)
 	{
 		float4 Dir = _Target - _Postion;
 		Dir.Normal2D();
@@ -67,12 +67,12 @@ public:
 	}
 
 
-	static float4 DegreeToDirectionFloat4(float _Degree)
+	static float4 DegreeToDirection2D(float _Degree)
 	{
-		return RadianToDirectionFloat4(_Degree * GameEngineMath::DegreeToRadian);
+		return RadianToDirection2D(_Degree * GameEngineMath::DegreeToRadian);
 	}
 
-	static float4 RadianToDirectionFloat4(float _Radian)
+	static float4 RadianToDirection2D(float _Radian)
 	{
 		return { cosf(_Radian), sinf(_Radian) };
 	}

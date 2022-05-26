@@ -40,17 +40,24 @@ public:
 		Position = _Value;
 	}
 
-	inline float4 GetScale()
+	inline void SetMove(const float4& _Value)
+	{
+		Position += _Value;
+	}
+
+	inline float4 GetScale() const
 	{
 		return Scale;
 	}
-	inline float4 GetRotation()
+	inline float4 GetRotation() const
 	{
 		return Rotation;
 	}
-	inline float4 GetPosition()
+	inline float4 GetPosition() const
 	{
 		return Position;
 	}
+
+
 };
 

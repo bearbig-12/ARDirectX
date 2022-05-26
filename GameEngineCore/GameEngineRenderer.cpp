@@ -21,8 +21,30 @@ void GameEngineRenderer::Start()
 	GetActor()->GetLevel()->PushRenderer(this);
 }
 
+
+float4 XDir = { 1,0 };
+float4 YDir = { 0,-1 };
+float4 Gravity = { 0, 1 };
+
+float Angle = 0.0f;
+float Dis = 0.0f;
 void GameEngineRenderer::Render(float _DeltaTime)
 {
+	//34ºÐ 24ÃÊ
+
+	//float4 Dir = float4::DegreeToDirection2D(Angle);
+	float4 Dir = { 200.0f, 0.0f, 0.0f };
+
+	Dir = float4::VectorRotationToDegreeZ(Dir, 90.0f);
+
+	//GetActor()->GetTransform().SetMove(Dir * _DeltaTime);
+
+	Angle += 360 * _DeltaTime;
+	Dis += 10 * _DeltaTime;
+	
+	GetActor()->GetTransform().SetPosition(float4{ 300.0f,300.0f } + Dir * Dis);
+
+	//·»´õ¸µ
 	GameEngineVertexBuffer* Vertex = GameEngineVertexBuffer::Find("Rect");
 	GameEngineIndexBuffer* Index = GameEngineIndexBuffer::Find("Rect");
 
