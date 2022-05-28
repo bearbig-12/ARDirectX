@@ -35,18 +35,26 @@ void GameEngineRenderer::Render(float _DeltaTime)
 	//float4 Dir = float4::DegreeToDirection2D(Angle);
 	float4 Dir = { 200.0f, 0.0f, 0.0f };
 
-	Dir = float4::VectorRotationToDegreeZ(Dir, 90.0f);
+	//Dir = float4::VectorRotationToDegreeZAxis(Dir, 90.0f);
 
 	//GetActor()->GetTransform().SetMove(Dir * _DeltaTime);
 
-	Angle += 360 * _DeltaTime;
+	Angle += _DeltaTime;
 	Dis += 10 * _DeltaTime;
 	
-	GetActor()->GetTransform().SetPosition(float4{ 300.0f,300.0f } + Dir * Dis);
+	//GetActor()->GetTransform().SetPosition(float4{ 300.0f,300.0f } + Dir * Dis);
 
 	//렌더링
-	GameEngineVertexBuffer* Vertex = GameEngineVertexBuffer::Find("Rect");
-	GameEngineIndexBuffer* Index = GameEngineIndexBuffer::Find("Rect");
+	//GameEngineVertexBuffer* Vertex = GameEngineVertexBuffer::Find("Rect");
+	//GameEngineIndexBuffer* Index = GameEngineIndexBuffer::Find("Rect");
+
+	//육망성
+	//GameEngineVertexBuffer* Vertex = GameEngineVertexBuffer::Find("HexaGram");
+	//GameEngineIndexBuffer* Index = GameEngineIndexBuffer::Find("HexaGram");
+
+	// 정육각형
+	GameEngineVertexBuffer* Vertex = GameEngineVertexBuffer::Find("BOX");
+	GameEngineIndexBuffer* Index = GameEngineIndexBuffer::Find("BOX");
 
 	std::vector<POINT> DrawVertex;
 	DrawVertex.resize(Index->Indexs.size());
@@ -66,6 +74,11 @@ void GameEngineRenderer::Render(float _DeltaTime)
 		// [0.5f] [0.5f] []                  [100] [100] [] 
 		// 크
 		CopyBuffer[i] *= GetActor()->GetTransform().GetScale();
+
+		// 돌리고 돌리고 돌다 보면은~
+		CopyBuffer[i] = float4::VectorRotationToRadianXAxis(CopyBuffer[i], Angle);
+		CopyBuffer[i] = float4::VectorRotationToRadianYAxis(CopyBuffer[i], Angle);
+		CopyBuffer[i] = float4::VectorRotationToRadianZAxis(CopyBuffer[i], Angle);
 
 		// 자전
 		// CopyBuffer[TriIndex] *= GetActor()->GetTransform().GetScale();
