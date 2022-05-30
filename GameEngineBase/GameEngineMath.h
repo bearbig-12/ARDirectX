@@ -14,8 +14,8 @@
 class GameEngineMath
 {
 public:
-	static const float PIE;
-	static const float PIE2;
+	static const float PI;
+	static const float PI2;
 	static const float DEG;
 	static const float DegreeToRadian;
 	static const float RadianToDegree;
@@ -68,7 +68,7 @@ public:
 
 		if (_Postion.y > _Target.y)
 		{
-			Angle = GameEngineMath::PIE2 - Angle;
+			Angle = GameEngineMath::PI2 - Angle;
 		}
 
 		return Angle;
@@ -89,6 +89,15 @@ public:
 	{
 		return VectorRotationToRadianZAxis(_Value, _Degree * GameEngineMath::DegreeToRadian);
 	}
+
+	// 회전     크기       
+	// 
+	//[][][][] [][][][]   
+	//[][][][]*[][][][] * 
+	//[][][][] [][][][]   
+	//[][][][] [][][][]   
+
+	// x * cosf(_Radian) + y * 
 
 	static float4 VectorRotationToRadianZAxis(const float4& _Value, float _Radian)
 	{
@@ -119,6 +128,9 @@ public:
 		return VectorRotationToRadianXAxis(_Value, _Degree * GameEngineMath::DegreeToRadian);
 	}
 
+	// [][] * cosf   -sinf
+	// [][]   sinf   cosf
+
 	static float4 VectorRotationToRadianXAxis(const float4& _Value, float _Radian)
 	{
 		float4 Rot;
@@ -130,13 +142,13 @@ public:
 
 
 
-	static float4 Lerp(float4 p1, float4 p2, float Time)
+	static float4 Lerp(const float4& p1, const float4& p2, float Time)
 	{
 		return p1 * (1.0f - Time) + p2 * Time;
 	}
 
 	// 보통 누적된 시간을 Time
-	static float4 LerpLimit(float4 p1, float4 p2, float Time)
+	static float4 LerpLimit(const float4& p1, const float4& p2, float Time)
 	{
 		if (1.0f <= Time)
 		{
@@ -146,9 +158,17 @@ public:
 		return Lerp(p1, p2, Time);
 	}
 
+	//           []
+	//           []
+	//           []
+	// [][][][]  []
 
-	//X = P1X * cosf(40) - P1Y * sinf(40)
-	//Y = P1X * sinf(40) + P1Y * cosf(40)
+	static float DotProduct3D(const float4& _Left, const float4& _Right)
+	{
+		float fValue = _Left.x * _Right.x + _Left.y * _Right.y + _Left.z * _Right.z;
+		// DirectX::XMVector3Dot
+		return fValue;
+	}
 
 
 
@@ -476,11 +496,11 @@ public:
 
 public:
 	float4x4() {
-		Indentity();
+		Identity();
 	}
 
 public:
-	void Indentity()
+	void Identity()
 	{
 		memset(Arr1D, 0, sizeof(float) * 16);
 		Arr2D[0][0] = 1.0f;
@@ -491,7 +511,7 @@ public:
 
 	void Scale(const float4& _Value)
 	{
-		Indentity();
+		Identity();
 		Arr2D[0][0] = _Value.x;
 		Arr2D[1][1] = _Value.y;
 		Arr2D[2][2] = _Value.z;
@@ -500,11 +520,75 @@ public:
 
 	void Postion(const float4& _Value)
 	{
-		Indentity();
+		Identity();
 		Arr2D[3][0] = _Value.x;
 		Arr2D[3][1] = _Value.y;
 		Arr2D[3][2] = _Value.z;
 		Arr2D[3][3] = 1.0f;
+	}
+
+	void RotationXDegree(const float _Value)
+	{
+		RotationXRadian(_Value);
+	}
+
+	void RotationXRadian(const float _Value)
+	{
+		Arr2D[1][1] = cosf(_Value);
+		Arr2D[1][2] = sinf(_Value);
+		Arr2D[2][1] = -sinf(_Value);
+		Arr2D[2][2] = cosf(_Value);
+	}
+
+	void RotYDegree(const float _Value)
+	{
+		RotationYRadian(_Value);
+	}
+
+	void RotationYRadian(const float _Value)
+	{
+		Arr2D[0][0] = cosf(_Value);
+		Arr2D[0][2] = -sinf(_Value);
+		Arr2D[2][0] = sinf(_Value);
+		Arr2D[2][2] = cosf(_Value);
+	}
+
+	void RotationZDegree(const float _Value)
+	{
+		RotationZRadian(_Value * GameEngineMath::DegreeToRadian);
+	}
+
+	void RotationZRadian(const float _Value)
+	{
+		Arr2D[0][0] = cosf(_Value);
+		Arr2D[0][1] = sinf(_Value);
+		Arr2D[1][0] = -sinf(_Value);
+		Arr2D[1][1] = cosf(_Value);
+	}
+
+
+	void RotationDegree(const float4& _Value)
+	{
+		RotationRadian(_Value * GameEngineMath::DegreeToRadian);
+	}
+
+	void RotationRadian(const float4& _Value)
+	{
+		float4x4 XRot;
+		float4x4 YRot;
+		float4x4 ZRot;
+		XRot.RotationXRadian(_Value.x);
+		YRot.RotationYRadian(_Value.y);
+		ZRot.RotationZRadian(_Value.z);
+
+		*this = XRot * YRot * ZRot;
+	}
+
+
+	//               바라보고 있는 위치
+	void View(const float4& _EyePostion, const float4& _Up)
+	{
+
 	}
 
 

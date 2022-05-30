@@ -30,7 +30,7 @@ void GameEngineRenderer::Start()
 //float Dis = 0.0f;
 void GameEngineRenderer::Render(float _DeltaTime)
 {
-	
+
 
 	//float4 Dir = float4::DegreeToDirection2D(Angle);
 	//float4 Dir = { 200.0f, 0.0f, 0.0f };
@@ -41,7 +41,7 @@ void GameEngineRenderer::Render(float _DeltaTime)
 
 	//Angle += _DeltaTime;
 	//Dis += 10 * _DeltaTime;
-	
+
 	//GetActor()->GetTransform().SetPosition(float4{ 300.0f,300.0f } + Dir * Dis);
 
 	//렌더링
@@ -69,6 +69,7 @@ void GameEngineRenderer::Render(float _DeltaTime)
 
 	Scale.Scale(GetActor()->GetTransform().GetScale());
 	Position.Postion(GetActor()->GetTransform().GetPosition());
+	Rotate.RotationRadian(GetActor()->GetTransform().GetRotation());
 
 	World = Scale * Rotate * Position;
 
@@ -82,13 +83,6 @@ void GameEngineRenderer::Render(float _DeltaTime)
 		CopyBuffer[i] = Vertex->Vertexs[TriIndex];
 
 		CopyBuffer[i] = CopyBuffer[i] * World;
-
-		// 자전
-		//CopyBuffer[i] = float4::VectorRotationToDegreeXAxis(CopyBuffer[i], Angle);
-		//CopyBuffer[i] = float4::VectorRotationToDegreeYAxis(CopyBuffer[i], Angle);
-		//CopyBuffer[i] = float4::VectorRotationToDegreeZAxis(CopyBuffer[i], Angle);
-
-
 
 
 		DrawVertex[i] = CopyBuffer[i].GetConvertWindowPOINT();
