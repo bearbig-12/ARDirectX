@@ -22,25 +22,25 @@ void GameEngineRenderer::Start()
 }
 
 
-float4 XDir = { 1,0 };
-float4 YDir = { 0,-1 };
-float4 Gravity = { 0, 1 };
-
-float Angle = 0.0f;
-float Dis = 0.0f;
+//float4 XDir = { 1,0 };
+//float4 YDir = { 0,-1 };
+//float4 Gravity = { 0, 1 };
+//
+//float Angle = 0.0f;
+//float Dis = 0.0f;
 void GameEngineRenderer::Render(float _DeltaTime)
 {
-	//34분 24초
+	
 
 	//float4 Dir = float4::DegreeToDirection2D(Angle);
-	float4 Dir = { 200.0f, 0.0f, 0.0f };
+	//float4 Dir = { 200.0f, 0.0f, 0.0f };
 
 	//Dir = float4::VectorRotationToDegreeZAxis(Dir, 90.0f);
 
 	//GetActor()->GetTransform().SetMove(Dir * _DeltaTime);
 
-	Angle += _DeltaTime;
-	Dis += 10 * _DeltaTime;
+	//Angle += _DeltaTime;
+	//Dis += 10 * _DeltaTime;
 	
 	//GetActor()->GetTransform().SetPosition(float4{ 300.0f,300.0f } + Dir * Dis);
 
@@ -62,6 +62,15 @@ void GameEngineRenderer::Render(float _DeltaTime)
 	std::vector<float4> CopyBuffer;
 	CopyBuffer.resize(Index->Indexs.size());
 
+	float4x4 Scale;
+	float4x4 Position;
+	float4x4 Rotate;
+	float4x4 World;
+
+	Scale.Scale(GetActor()->GetTransform().GetScale());
+	Position.Postion(GetActor()->GetTransform().GetPosition());
+
+	World = Scale * Rotate * Position;
 
 
 	for (size_t i = 0; i < Index->Indexs.size(); i++)
@@ -69,22 +78,16 @@ void GameEngineRenderer::Render(float _DeltaTime)
 		int TriIndex = Index->Indexs[i];
 
 		// 0 번째 순서의 점이 됩니다.
+		// 최초에 원본 매쉬의 점을 복사합니다.
 		CopyBuffer[i] = Vertex->Vertexs[TriIndex];
 
-		// [0.5f] [0.5f] []                  [100] [100] [] 
-		// 크
-		CopyBuffer[i] *= GetActor()->GetTransform().GetScale();
-
-		// 돌리고 돌리고 돌다 보면은~
-		CopyBuffer[i] = float4::VectorRotationToRadianXAxis(CopyBuffer[i], Angle);
-		CopyBuffer[i] = float4::VectorRotationToRadianYAxis(CopyBuffer[i], Angle);
-		CopyBuffer[i] = float4::VectorRotationToRadianZAxis(CopyBuffer[i], Angle);
+		CopyBuffer[i] = CopyBuffer[i] * World;
 
 		// 자전
-		// CopyBuffer[TriIndex] *= GetActor()->GetTransform().GetScale();
+		//CopyBuffer[i] = float4::VectorRotationToDegreeXAxis(CopyBuffer[i], Angle);
+		//CopyBuffer[i] = float4::VectorRotationToDegreeYAxis(CopyBuffer[i], Angle);
+		//CopyBuffer[i] = float4::VectorRotationToDegreeZAxis(CopyBuffer[i], Angle);
 
-		// 이동
-		CopyBuffer[i] += GetActor()->GetTransform().GetPosition();
 
 
 
