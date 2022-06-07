@@ -4,8 +4,8 @@
 
 // Ό³Έν :
 class GameEngineComponent :
-	public GameEngineNameObject
-	, public GameEngineUpdateObject
+	public GameEngineNameObject,
+	public GameEngineUpdateObject
 {
 	friend class GameEngineActor;
 
@@ -20,15 +20,18 @@ public:
 	GameEngineComponent& operator=(const GameEngineComponent& _Other) = delete;
 	GameEngineComponent& operator=(GameEngineComponent&& _Other) noexcept = delete;
 
-
 	inline GameEngineActor* GetActor()
 	{
 		return ParentActor;
 	}
 
 protected:
+	virtual void Start() {}
+	virtual void Update(float _DeltaTime) {}
+	virtual void End() {}
 
 private:
 	class GameEngineActor* ParentActor;
+
 };
 

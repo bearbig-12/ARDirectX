@@ -1,6 +1,7 @@
 #include "GameEngineLevel.h"
 #include "GameEngineActor.h"
 #include "GameEngineRenderer.h"
+
 GameEngineLevel::GameEngineLevel()
 {
 }
@@ -21,20 +22,30 @@ GameEngineLevel::~GameEngineLevel()
 	}
 }
 
+
 void GameEngineLevel::ActorUpdate(float _DelataTime)
 {
 	for (const std::pair<int, std::list<GameEngineActor*>>& Group : AllActors)
 	{
-		// Group.first;
-
 		float ScaleTime = GameEngineTime::GetInst()->GetDeltaTime(Group.first);
 		for (GameEngineActor* const Actor : Group.second)
 		{
-			Actor->AddAccTime(_DelataTime); // acctime 이 오브젝트가 생긴지 얼마나 지난건지 알려줌
+			Actor->AddAccTime(_DelataTime);
 			Actor->ComponentUpdate(ScaleTime, _DelataTime);
 			Actor->Update(ScaleTime);
 		}
 	}
+
+	for (const std::pair<int, std::list<GameEngineActor*>>& Group : AllActors)
+	{
+		float ScaleTime = GameEngineTime::GetInst()->GetDeltaTime(Group.first);
+		for (GameEngineActor* const Actor : Group.second)
+		{
+			Actor->GetTransform().CalculateWorld();
+			Actor->ComponentCalculateTransform();
+		}
+	}
+
 }
 
 void GameEngineLevel::PushRenderer(GameEngineRenderer* _Renderer)
@@ -52,4 +63,12 @@ void GameEngineLevel::Render(float _DelataTime)
 			Actor->Render(ScaleTime);
 		}
 	}
+}
+
+void GameEngineLevel::LevelUpdate(float _DeltaTime)
+{
+	AddAccTime(_DeltaTime);
+	Update(_DeltaTime);
+	ActorUpdate(_DeltaTime);
+	Render(_DeltaTime);
 }

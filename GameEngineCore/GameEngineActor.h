@@ -6,6 +6,7 @@
 
 // 설명 : 화면에 등장하는 모든것을 표현하기 위한 클래스
 class GameEngineComponent;
+class GameEngineTransformComponent;
 class GameEngineActor :
 	public GameEngineNameObject,
 	public GameEngineUpdateObject
@@ -23,7 +24,10 @@ public:
 	GameEngineActor& operator=(const GameEngineActor& _Other) = delete;
 	GameEngineActor& operator=(GameEngineActor&& _Other) noexcept = delete;
 
-	inline GameEngineLevel* GetLevel() { return ParentLevel; }
+	inline GameEngineLevel* GetLevel()
+	{
+		return ParentLevel;
+	}
 
 	template<typename Componenttype>
 	Componenttype* CreateComponent()
@@ -31,11 +35,21 @@ public:
 		GameEngineComponent* NewComponent = new Componenttype();
 		NewComponent->ParentActor = this;
 		NewComponent->Start();
-		AllComList.push_back(NewComponent);
+
+		GameEngineTransformComponent* TransCom = dynamic_cast<GameEngineTransformComponent*>(NewComponent);
+		if (nullptr == TransCom)
+		{
+			AllComList.push_back(NewComponent);
+		}
+		else
+		{
+			SettingTransformComponent(TransCom);
+			AllTransComList.push_back(TransCom);
+		}
 		return dynamic_cast<Componenttype*>(NewComponent);
 	}
 
-	
+	void SettingTransformComponent(GameEngineTransformComponent* TransCom);
 
 protected:
 	virtual void Start() override;
@@ -47,13 +61,16 @@ private:
 
 	std::list<class GameEngineComponent*> AllComList;
 
+	std::list<class GameEngineTransformComponent*> AllTransComList;
+
 	class GameEngineLevel* ParentLevel;
 
 	void SetLevel(GameEngineLevel* _ParentLevel)
 	{
 		ParentLevel = _ParentLevel;
 	}
-	//////////////////////////////////////////////////////////기하 관련
+
+	/////////////////////////////////////////////////// 기하관련
 private:
 	GameEngineTransform Transform;
 
@@ -62,5 +79,8 @@ public:
 	{
 		return Transform;
 	}
+
+public:
+	void ComponentCalculateTransform();
 };
 

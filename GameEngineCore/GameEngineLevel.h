@@ -66,7 +66,7 @@ private:
 
 	void ActorUpdate(float _DelataTime);
 
-
+	void LevelUpdate(float DeltaTime);
 
 private:
 	// 0번 백그라운드

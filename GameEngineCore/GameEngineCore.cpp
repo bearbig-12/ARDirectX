@@ -88,12 +88,7 @@ void GameEngineCore::CoreUpdate(GameEngineCore* _UserCore)
 	// 엔진수준에서 유저가 하고 싶은일.
 	_UserCore->Update(DeltaTime);
 
-	// 레벨수준에서 유저가 하고 싶은일.
-	CurrentLevel->AddAccTime(DeltaTime);
-	CurrentLevel->Update(DeltaTime);
-	CurrentLevel->ActorUpdate(DeltaTime);
-	CurrentLevel->Render(DeltaTime);
-	// CurrentLevel->
+	CurrentLevel->LevelUpdate(DeltaTime);
 
 }
 

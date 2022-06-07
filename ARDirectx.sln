@@ -35,6 +35,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DOC", "DOC", "{449EB6A3-B86
 	ProjectSection(SolutionItems) = preProject
 		공간변환.txt = 공간변환.txt
 		이벤트.txt = 이벤트.txt
+		프로젝트구성이유.txt = 프로젝트구성이유.txt
 	EndProjectSection
 EndProject
 Global

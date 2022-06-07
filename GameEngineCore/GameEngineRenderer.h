@@ -1,8 +1,8 @@
 #pragma once
-#include "GameEngineComponent.h"
+#include "GameEngineTransformComponent.h"
 
 // Ό³Έν :
-class GameEngineRenderer : public GameEngineComponent
+class GameEngineRenderer : public GameEngineTransformComponent
 {
 	friend class GameEngineLevel;
 
