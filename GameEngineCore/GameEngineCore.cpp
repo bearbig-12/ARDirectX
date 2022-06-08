@@ -59,6 +59,13 @@ void GameEngineCore::CoreUpdate(GameEngineCore* _UserCore)
 {
 	if (nullptr != NextLevel)
 	{
+
+
+		Rectangle(GameEngineWindow::GetInst()->GetHDC()
+			, 0
+			, 0
+			, GameEngineWindow::GetInst()->GetScale().x, GameEngineWindow::GetInst()->GetScale().y);
+
 		if (nullptr != CurrentLevel)
 		{
 			CurrentLevel->OffEvent();
@@ -85,6 +92,7 @@ void GameEngineCore::CoreUpdate(GameEngineCore* _UserCore)
 
 	float DeltaTime = GameEngineTime::GetDeltaTime();
 
+	GameEngineInput::GetInst()->Update(DeltaTime);
 	// 엔진수준에서 유저가 하고 싶은일.
 	_UserCore->Update(DeltaTime);
 

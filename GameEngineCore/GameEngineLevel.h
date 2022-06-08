@@ -33,13 +33,13 @@ protected:
 	//}
 
 	template<typename ActorType, typename GroupIndexType>
-	GameEngineActor* CreateActor(GroupIndexType _ObjectGroupIndex)
+	ActorType* CreateActor(GroupIndexType _ObjectGroupIndex)
 	{
 		return CreateActor<ActorType>(static_cast<int>(_ObjectGroupIndex));
 	}
 
 	template<typename ActorType>
-	GameEngineActor* CreateActor(int _ObjectGroupIndex = 0)
+	ActorType* CreateActor(int _ObjectGroupIndex = 0)
 	{
 		GameEngineActor* NewActor = new ActorType();
 		NewActor->ParentLevel = this;
@@ -53,7 +53,7 @@ protected:
 
 		Group.push_back(NewActor);
 
-		return NewActor;
+		return dynamic_cast<ActorType*>(NewActor);
 	}
 
 

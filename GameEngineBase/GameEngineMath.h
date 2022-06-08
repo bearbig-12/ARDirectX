@@ -53,6 +53,29 @@ private:
 class float4
 {
 public:
+	// 외적을 쓸수 있는곳
+		// 마우스 클릭시 회전방향 알아낼때.
+	static float4 Cross(const float4& _Left, const float4& _Right)
+	{
+		// DirectX::XMVector3Cross()
+
+		float4 vResult = float4(
+			(_Left.Arr1D[1] * _Right.Arr1D[2]) - (_Left.Arr1D[2] * _Right.Arr1D[1]),
+			(_Left.Arr1D[2] * _Right.Arr1D[0]) - (_Left.Arr1D[0] * _Right.Arr1D[2]),
+			(_Left.Arr1D[0] * _Right.Arr1D[1]) - (_Left.Arr1D[1] * _Right.Arr1D[0]),
+			0.0f
+		);
+		return vResult;
+	}
+
+
+	static float4 NormalizeReturn(const float4& _Value)
+	{
+		float4 Return = _Value;
+		Return.Normalize();
+		return Return;
+	}
+
 	static float VectorXYtoDegree(const float4& _Postion, const float4& _Target)
 	{
 		return VectorXYtoRadian(_Postion, _Target) * GameEngineMath::RadianToDegree;
@@ -61,7 +84,7 @@ public:
 	static float VectorXYtoRadian(const float4& _Postion, const float4& _Target)
 	{
 		float4 Dir = _Target - _Postion;
-		Dir.Normal2D();
+		Dir.Normalize();
 		// cos(90) => 1.5
 		// acos(1.5) => 90
 		float Angle = acosf(Dir.x);
@@ -248,21 +271,15 @@ public:
 		return { x * 0.5f, y * 0.5f , z * 0.5f, 1.0f };
 	}
 
-	float Len2D() const
-	{
-		// sqrtf 제곱근 구해줍니다.
-		return sqrtf((x * x) + (y * y));
-	}
-
-	float Len3D() const
+	float Length() const
 	{
 		// sqrtf 제곱근 구해줍니다.
 		return sqrtf((x * x) + (y * y) + (z * z));
 	}
 
-	void Normal2D()
+	void Normalize()
 	{
-		float Len = Len2D();
+		float Len = Length();
 		if (0 == Len)
 		{
 			return;
@@ -270,14 +287,21 @@ public:
 
 		x /= Len;
 		y /= Len;
-
+		z /= Len;
 		// sqrtf 제곱근 구해줍니다.
 		return;
 	}
 
+	float4 NormalizeReturn() const
+	{
+		float4 Return = *this;
+		Return.Normalize();
+		return Return;
+	}
+
 	void Range2D(float _Max)
 	{
-		Normal2D();
+		Normalize();
 
 		x *= _Max;
 		y *= _Max;
@@ -584,11 +608,66 @@ public:
 		*this = XRot * YRot * ZRot;
 	}
 
+	//               바라보고 있는 위치
+	void ViewPosition(const float4& _EyePostion, const float4& _EyeFocus, const float4& _Up)
+	{
+		//float4 EyeDir = (_EyePostion - _EyeFoucs);
+		//EyeDir.Normalize();
+		View((_EyeFocus - _EyePostion), _Up);
+	}
 
 	//               바라보고 있는 위치
-	void View(const float4& _EyePostion, const float4& _Up)
+	void View(const float4& _EyeDir, const float4& _Up)
 	{
+		// 100 
+		// 010 
+		// 001 
 
+		//assert(!XMVector3Equal(EyeDirection, XMVectorZero()));
+		//assert(!XMVector3IsInfinite(EyeDirection));
+		//assert(!XMVector3Equal(UpDirection, XMVectorZero()));
+		//assert(!XMVector3IsInfinite(UpDirection));
+
+		//XMVECTOR R2 = XMVector3Normalize(EyeDirection);
+		float4 R2 = float4::NormalizeReturn(_EyeDir);
+
+		//XMVECTOR R0 = XMVector3Cross(UpDirection, R2);
+		float4 R0 = float4::Cross(_Up, R2);
+		//R0 = XMVector3Normalize(R0);
+
+		float4 R1 = float4::Cross(R2, R0);
+
+		float4x4 Mat;
+
+		//ArrV[0] = R0;
+		//ArrV[1] = R1;
+		//ArrV[2] = R2;
+
+		// float4
+
+		//XMVECTOR R1 = XMVector3Cross(R2, R0);
+
+		//XMVECTOR NegEyePosition = XMVectorNegate(EyePosition);
+
+		//XMVECTOR D0 = XMVector3Dot(R0, NegEyePosition);
+		//XMVECTOR D1 = XMVector3Dot(R1, NegEyePosition);
+		//XMVECTOR D2 = XMVector3Dot(R2, NegEyePosition);
+
+		//XMMATRIX M;
+		//M.r[0] = XMVectorSelect(D0, R0, g_XMSelect1110.v);
+		//M.r[1] = XMVectorSelect(D1, R1, g_XMSelect1110.v);
+		//M.r[2] = XMVectorSelect(D2, R2, g_XMSelect1110.v);
+		//M.r[3] = g_XMIdentityR3.v;
+
+		//M = XMMatrixTranspose(M);
+
+		//return M;
+
+
+		// 뷰 행렬을 만들어주는 함수에요.
+		// DirectX::XMMatrixLookAtLH()
+
+		
 	}
 
 

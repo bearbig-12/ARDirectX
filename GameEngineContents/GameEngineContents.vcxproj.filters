@@ -39,6 +39,9 @@
     <ClInclude Include="Enums.h">
       <Filter>Global</Filter>
     </ClInclude>
+    <ClInclude Include="Monster.h">
+      <Filter>Actor\Play</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ContentsCore.cpp">
@@ -55,6 +58,9 @@
     </ClCompile>
     <ClCompile Include="TitleLogo.cpp">
       <Filter>Actor\Title</Filter>
+    </ClCompile>
+    <ClCompile Include="Monster.cpp">
+      <Filter>Actor\Play</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
