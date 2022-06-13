@@ -5,13 +5,18 @@
 #include <map>
 
 // 설명 : 화면(타이틀 화면, 플레이 화면, 인벤토리 화면)
+class GameEngineCore;
 class GameEngineActor;
+class GameEngineCamera;
+class GameEngineRenderer;
+class GameEngineCameraActor;
 class GameEngineLevel :
 	public GameEngineNameObject,
 	public GameEngineUpdateObject
 {
-	friend class GameEngineRenderer;
-	friend class GameEngineCore;
+	friend GameEngineCore;
+	friend GameEngineCamera;
+	friend GameEngineRenderer;
 	// 레벨이 현재까지 얼마나 켜져있었는지 시간을 잴수 있게 한다.
 
 public:
@@ -72,7 +77,11 @@ private:
 	// 0번 백그라운드
 	// 1번 플레이어
 	// 2번 UI
-	std::map<int, std::list<class GameEngineRenderer*>> AllRenderer_;
+	GameEngineCamera* MainCamera;
+
+	GameEngineCamera* UIMainCamera;
+
+	void PushCamera(GameEngineCamera* _Camera);
 
 	void PushRenderer(GameEngineRenderer* _Renderer);
 

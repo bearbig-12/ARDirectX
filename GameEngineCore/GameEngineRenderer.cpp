@@ -21,7 +21,6 @@ void GameEngineRenderer::Start()
 	GetActor()->GetLevel()->PushRenderer(this);
 }
 
-
 void GameEngineRenderer::Render(float _DeltaTime)
 {
 	// ·£´õ¸µ

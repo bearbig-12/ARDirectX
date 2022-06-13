@@ -54,7 +54,7 @@ class float4
 {
 public:
 	// 외적을 쓸수 있는곳
-		// 마우스 클릭시 회전방향 알아낼때.
+	// 마우스 클릭시 회전방향 알아낼때.
 	static float4 Cross(const float4& _Left, const float4& _Right)
 	{
 		// DirectX::XMVector3Cross()
@@ -67,6 +67,22 @@ public:
 		);
 		return vResult;
 	}
+
+	static float4 Select(const float4& _Left, const float4& _Right, const float4& _Control)
+	{
+		float4 Return;
+		//float4 Return = {
+		//(_Left.Arr1D[0] & ~_Control.Arr1D[0]) | (_Right.Arr1D[0] & _Control.Arr1D[0]),
+		//(_Left.Arr1D[1] & ~_Control.Arr1D[1]) | (_Right.Arr1D[1] & _Control.Arr1D[1]),
+		//(_Left.Arr1D[2] & ~_Control.Arr1D[2]) | (_Right.Arr1D[2] & _Control.Arr1D[2]),
+		//(_Left.Arr1D[3] & ~_Control.Arr1D[3]) | (_Right.Arr1D[3] & _Control.Arr1D[3]),
+		//};
+		return Return;
+
+
+		// DirectX::XMVectorSelect
+	}
+
 
 
 	static float4 NormalizeReturn(const float4& _Value)
@@ -112,15 +128,6 @@ public:
 	{
 		return VectorRotationToRadianZAxis(_Value, _Degree * GameEngineMath::DegreeToRadian);
 	}
-
-	// 회전     크기       
-	// 
-	//[][][][] [][][][]   
-	//[][][][]*[][][][] * 
-	//[][][][] [][][][]   
-	//[][][][] [][][][]   
-
-	// x * cosf(_Radian) + y * 
 
 	static float4 VectorRotationToRadianZAxis(const float4& _Value, float _Radian)
 	{
@@ -288,6 +295,7 @@ public:
 		x /= Len;
 		y /= Len;
 		z /= Len;
+
 		// sqrtf 제곱근 구해줍니다.
 		return;
 	}
@@ -371,6 +379,7 @@ public:
 
 		return *this;
 	}
+
 
 	bool CompareInt2D(const float4& _Value) const
 	{
@@ -516,6 +525,7 @@ public:
 	{
 		float Arr1D[16];
 		float Arr2D[4][4];
+		float4 ArrV[4];
 	};
 
 public:
@@ -609,19 +619,19 @@ public:
 	}
 
 	//               바라보고 있는 위치
-	void ViewPosition(const float4& _EyePostion, const float4& _EyeFocus, const float4& _Up)
+	void ViewPostion(const float4& _EyePostion, const float4& _EyeFocus, const float4& _Up)
 	{
-		//float4 EyeDir = (_EyePostion - _EyeFoucs);
-		//EyeDir.Normalize();
-		View((_EyeFocus - _EyePostion), _Up);
+		// DirectX::XMMatrixLookAtLH
+
+		// float4 EyeDir = (_EyeFocus - _EyePostion);
+		// EyeDir.Normalize();
+
+		View(_EyePostion, (_EyeFocus - _EyePostion), _Up);
 	}
 
-	//               바라보고 있는 위치
-	void View(const float4& _EyeDir, const float4& _Up)
+	void View(const float4& _EyePostion, const float4& _EyeDir, const float4& _Up)
 	{
-		// 100 
-		// 010 
-		// 001 
+		// View
 
 		//assert(!XMVector3Equal(EyeDirection, XMVectorZero()));
 		//assert(!XMVector3IsInfinite(EyeDirection));
@@ -629,32 +639,34 @@ public:
 		//assert(!XMVector3IsInfinite(UpDirection));
 
 		//XMVECTOR R2 = XMVector3Normalize(EyeDirection);
+		// 길이 1짜리 벡터로 만들고
 		float4 R2 = float4::NormalizeReturn(_EyeDir);
 
 		//XMVECTOR R0 = XMVector3Cross(UpDirection, R2);
-		float4 R0 = float4::Cross(_Up, R2);
 		//R0 = XMVector3Normalize(R0);
 
-		float4 R1 = float4::Cross(R2, R0);
-
-		float4x4 Mat;
-
-		//ArrV[0] = R0;
-		//ArrV[1] = R1;
-		//ArrV[2] = R2;
-
-		// float4
+		// 혹시나 넣어준 사람이 길이를 1로 만들지 않고 넣어줬을수 있으니까.
+		// 길이 1짜리 벡터로 만들고
+		float4 R0 = float4::Cross(_Up, R2);
+		R0.Normalize();
 
 		//XMVECTOR R1 = XMVector3Cross(R2, R0);
+		// 길이가 1인 벡터 2개를 외적하면 무조건 길이 1짜리 벡터가 나온다.
+		float4 R1 = float4::Cross(R2, R0);
 
 		//XMVECTOR NegEyePosition = XMVectorNegate(EyePosition);
+		float4 NegEyePosition = -_EyePostion;
 
 		//XMVECTOR D0 = XMVector3Dot(R0, NegEyePosition);
 		//XMVECTOR D1 = XMVector3Dot(R1, NegEyePosition);
 		//XMVECTOR D2 = XMVector3Dot(R2, NegEyePosition);
+		// 
+		float D0 = float4::DotProduct3D(R0, NegEyePosition);
+		float D1 = float4::DotProduct3D(R1, NegEyePosition);
+		float D2 = float4::DotProduct3D(R2, NegEyePosition);
 
 		//XMMATRIX M;
-		//M.r[0] = XMVectorSelect(D0, R0, g_XMSelect1110.v);
+		// M.r[0] = XMVectorSelect(D0, R0, g_XMSelect1110.v);
 		//M.r[1] = XMVectorSelect(D1, R1, g_XMSelect1110.v);
 		//M.r[2] = XMVectorSelect(D2, R2, g_XMSelect1110.v);
 		//M.r[3] = g_XMIdentityR3.v;
@@ -666,8 +678,6 @@ public:
 
 		// 뷰 행렬을 만들어주는 함수에요.
 		// DirectX::XMMatrixLookAtLH()
-
-		
 	}
 
 
@@ -710,6 +720,7 @@ public: // 연산자
 		Result.Arr2D[3][1] = (_Value.Arr2D[0][1] * x) + (_Value.Arr2D[1][1] * y) + (_Value.Arr2D[2][1] * z) + (_Value.Arr2D[3][1] * w);
 		Result.Arr2D[3][2] = (_Value.Arr2D[0][2] * x) + (_Value.Arr2D[1][2] * y) + (_Value.Arr2D[2][2] * z) + (_Value.Arr2D[3][2] * w);
 		Result.Arr2D[3][3] = (_Value.Arr2D[0][3] * x) + (_Value.Arr2D[1][3] * y) + (_Value.Arr2D[2][3] * z) + (_Value.Arr2D[3][3] * w);
+
 		return Result;
 
 	}

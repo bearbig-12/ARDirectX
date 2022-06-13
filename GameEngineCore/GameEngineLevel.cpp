@@ -1,8 +1,11 @@
 #include "GameEngineLevel.h"
 #include "GameEngineActor.h"
 #include "GameEngineRenderer.h"
+#include "GameEngineCamera.h"
 
 GameEngineLevel::GameEngineLevel()
+	: MainCamera(nullptr)
+	, UIMainCamera(nullptr)
 {
 }
 
@@ -50,19 +53,17 @@ void GameEngineLevel::ActorUpdate(float _DelataTime)
 
 void GameEngineLevel::PushRenderer(GameEngineRenderer* _Renderer)
 {
-	AllRenderer_[_Renderer->GetOrder()].push_back(_Renderer);
+	MainCamera->PushRenderer(_Renderer);
+}
+
+void GameEngineLevel::PushCamera(GameEngineCamera* _Camera)
+{
+	MainCamera = _Camera;
 }
 
 void GameEngineLevel::Render(float _DelataTime)
 {
-	for (const std::pair<int, std::list<GameEngineRenderer*>>& Group : AllRenderer_)
-	{
-		float ScaleTime = GameEngineTime::GetInst()->GetDeltaTime(Group.first);
-		for (GameEngineRenderer* const Actor : Group.second)
-		{
-			Actor->Render(ScaleTime);
-		}
-	}
+	MainCamera->Render(_DelataTime);
 }
 
 void GameEngineLevel::LevelUpdate(float _DeltaTime)

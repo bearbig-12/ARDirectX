@@ -3,9 +3,10 @@
 #include "GameEngineCamera.h"
 
 // Ό³Έν :
-class GameEngineCamera;
+class GameEngineLevel;
 class GameEngineCameraActor : public GameEngineActor
 {
+
 public:
 	// constrcuter destructer
 	GameEngineCameraActor();

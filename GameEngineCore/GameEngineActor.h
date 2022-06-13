@@ -29,10 +29,10 @@ public:
 		return ParentLevel;
 	}
 
-	template<typename Componenttype>
-	Componenttype* CreateComponent()
+	template<typename ComponentType>
+	ComponentType* CreateComponent()
 	{
-		GameEngineComponent* NewComponent = new Componenttype();
+		GameEngineComponent* NewComponent = new ComponentType();
 		NewComponent->ParentActor = this;
 		NewComponent->Start();
 
@@ -46,7 +46,7 @@ public:
 			SettingTransformComponent(TransCom);
 			AllTransComList.push_back(TransCom);
 		}
-		return dynamic_cast<Componenttype*>(NewComponent);
+		return dynamic_cast<ComponentType*>(NewComponent);
 	}
 
 	void SettingTransformComponent(GameEngineTransformComponent* TransCom);

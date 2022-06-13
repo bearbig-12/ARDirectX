@@ -64,7 +64,7 @@ void GameEngineCore::CoreUpdate(GameEngineCore* _UserCore)
 		Rectangle(GameEngineWindow::GetInst()->GetHDC()
 			, 0
 			, 0
-			, GameEngineWindow::GetInst()->GetScale().x, GameEngineWindow::GetInst()->GetScale().y);
+			, GameEngineWindow::GetInst()->GetScale().ix(), GameEngineWindow::GetInst()->GetScale().iy());
 
 		if (nullptr != CurrentLevel)
 		{
