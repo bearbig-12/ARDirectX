@@ -9,6 +9,7 @@ class GameEngineCore;
 class GameEngineActor;
 class GameEngineCamera;
 class GameEngineRenderer;
+class GameEngineTransform;
 class GameEngineCameraActor;
 class GameEngineLevel :
 	public GameEngineNameObject,
@@ -29,6 +30,13 @@ public:
 	GameEngineLevel(GameEngineLevel&& _Other) noexcept = delete;
 	GameEngineLevel& operator=(const GameEngineLevel& _Other) = delete;
 	GameEngineLevel& operator=(GameEngineLevel&& _Other) noexcept = delete;
+
+	GameEngineCamera* GetMainCamera()
+	{
+		return MainCamera;
+	}
+
+	GameEngineTransform& GetMainCameraActorTransform();
 
 protected:
 	//template<typename ReturnType, typename ActorType, typename GroupIndexType>

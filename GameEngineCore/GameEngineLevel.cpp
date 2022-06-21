@@ -61,6 +61,11 @@ void GameEngineLevel::PushCamera(GameEngineCamera* _Camera)
 	MainCamera = _Camera;
 }
 
+GameEngineTransform& GameEngineLevel::GetMainCameraActorTransform()
+{
+	return MainCamera->GetActor()->GetTransform();
+}
+
 void GameEngineLevel::Render(float _DelataTime)
 {
 	MainCamera->Render(_DelataTime);

@@ -24,6 +24,7 @@ public:
 		LocalScaleMat.Scale(LocalScale);
 	}
 
+
 	// 아무리 편의성 함수가 많아져도
 	void SetLocalRotation(const float4& _Value)
 	{
@@ -63,6 +64,11 @@ public:
 	inline float4x4 GetWorldWorld() const
 	{
 		return WorldWorldMat;
+	}
+
+	inline float4x4 GetWorldViewProjection() const
+	{
+		return WorldViewProjectMat;
 	}
 
 	inline float4 GetForwardVector() const

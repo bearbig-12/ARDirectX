@@ -15,7 +15,12 @@ void GameEngineCamera::Render(float _DeltaTime)
 {
 	// 랜더하기 전에 
 
-	View.View(GetTransform().GetLocalPosition(), GetTransform().GetForwardVector(), GetTransform().GetUpVector());
+	View.View(
+		GetActor()->GetTransform().GetLocalPosition(),
+		GetActor()->GetTransform().GetForwardVector(),
+		GetActor()->GetTransform().GetUpVector());
+
+	// View.View(GetTransform().GetLocalPosition(), GetTransform().GetForwardVector(), GetTransform().GetUpVector());
 	// Projection.
 
 	for (const std::pair<int, std::list<GameEngineRenderer*>>& Group : AllRenderer_)

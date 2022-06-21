@@ -12,7 +12,7 @@ void Player::Start()
 {
 	{
 		GameEngineRenderer* RendererTest = CreateComponent<GameEngineRenderer>();
-		RendererTest->GetTransform().SetLocalScale({ 100, 100, 0 });
+		RendererTest->GetTransform().SetLocalScale({ 100, 100, 100 });
 	}
 }
 
